@@ -6,7 +6,7 @@ const apiRoutes = require("./routes/index");
 
 // const userRepositroy = require("./repository/user-repository");
 
-const userService = require("./services/user-service");
+// const userService = require("./services/user-service");
 const app = express();
 
 const serverUpAndStart = () => {
@@ -20,9 +20,9 @@ const serverUpAndStart = () => {
     // const response = await repo.getById(1);
     // console.log(response);
 
-    const obj = new userService();
-    const token = obj.createToken({ email: "ashish@gmail.com", id: "1" });
-    console.log(token);
+    // const obj = new userService();
+    // const token = obj.createToken({ email: "ashish@gmail.com", id: "1" });
+    // console.log(token);
   });
 };
 

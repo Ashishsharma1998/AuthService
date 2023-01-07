@@ -1,6 +1,7 @@
 const userRepositroy = require("../repository/user-repository");
 const jwt = require("jsonwebtoken");
 const { JWT_KEY } = require("../config/serverConfig");
+const bcrypt = require("bcrypt");
 
 class userService {
   constructor() {
@@ -12,7 +13,7 @@ class userService {
       const response = await this.userRepositroy.create(data);
       return response;
     } catch (error) {
-      console.log("something went wrong in user srevice layer");
+      console.log("something went wrong in user service layer");
       throw { error };
     }
   }
@@ -22,7 +23,7 @@ class userService {
       const newToken = jwt.sign(user, JWT_KEY, { expiresIn: "1d" });
       return newToken;
     } catch (error) {
-      console.log("Error while creating json web token!");
+      console.log("something went wrong in creating json web token!");
       throw error;
     }
   }
@@ -33,6 +34,37 @@ class userService {
       return verified;
     } catch (error) {
       console.log("something went wrong in validation of token!");
+      throw error;
+    }
+  }
+
+  checkPassword(plainPassword, encryptedPassword) {
+    try {
+      return bcrypt.compareSync(plainPassword, encryptedPassword);
+    } catch (error) {
+      console.log("something went wrong in password matching!");
+      throw error;
+    }
+  }
+
+  async signIn(email, password) {
+    try {
+      //get user by email from db
+      const user = await this.userRepositroy.getByEmail(email);
+      //   console.log(user);
+
+      //then match the password i.e plain with encrypted one
+      const passwordMatch = this.checkPassword(password, user.password);
+
+      if (!passwordMatch) {
+        console.log("password is not correct!");
+        throw { error: "password is not matching" };
+      }
+      //if password matched then return jwt to the user
+      const newJwtToken = this.createToken({ email: user.email, id: user.id });
+      return newJwtToken;
+    } catch (error) {
+      console.log("something went wrong in signIn service!");
       throw error;
     }
   }
