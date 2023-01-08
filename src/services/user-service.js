@@ -47,6 +47,23 @@ class userService {
     }
   }
 
+  async isAuthenticated(token) {
+    try {
+      const response = this.verifyToken(token); //gives us {email , id , iat , exp}
+      if (!response) {
+        throw { error: "This token is not valid" };
+      }
+      const user = await this.userRepositroy.getById(response.id);
+      if (!user) {
+        throw { error: "NO user exits with the corresponding token!" };
+      }
+      return user.id;
+    } catch (error) {
+      console.log("something went wrong in user service");
+      throw error;
+    }
+  }
+
   async signIn(email, password) {
     try {
       //get user by email from db

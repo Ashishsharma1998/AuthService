@@ -10,4 +10,6 @@ const {
 router.post("/signUp", authRequestValidator, userController.create);
 router.post("/signIn", authRequestValidator, userController.signIn);
 
+router.get("/isAuthenticated", userController.isAuthenticated);
+
 module.exports = router;
