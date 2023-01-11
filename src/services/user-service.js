@@ -13,8 +13,11 @@ class userService {
       const response = await this.userRepositroy.create(data);
       return response;
     } catch (error) {
+      if (error.name === "SequelizeValidationError") {
+        throw error;
+      }
       console.log("something went wrong in user service layer");
-      throw { error };
+      throw error;
     }
   }
 
@@ -82,6 +85,16 @@ class userService {
       return newJwtToken;
     } catch (error) {
       console.log("something went wrong in signIn service!");
+      throw error;
+    }
+  }
+
+  async isAdmin(userId) {
+    try {
+      const response = await this.userRepositroy.isAdmin(userId);
+      return response;
+    } catch (error) {
+      console.log("something went wrong in service layer of admin check!");
       throw error;
     }
   }

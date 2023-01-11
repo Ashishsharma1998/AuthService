@@ -33,12 +33,14 @@ const serverUpAndStart = () => {
     // console.log(token);
 
     // const user = await User.findByPk(1);
-    const role = await Role.findByPk(1);
-    // user.addRole(role);
+    // const role = await Role.findByPk(1);
+    // console.log(user, role);
+    // // user.addRole(role);
+    // console.log(await user.hasRole(role));
 
     // const response = await user.getRoles();
-    const response = await role.getUsers();
-    console.log(response);
+    // const response = await role.getUsers();
+    // console.log(response);
   });
 };
 
